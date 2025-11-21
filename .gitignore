@@ -19,3 +19,4 @@ web/package-analysis-web/package_analysis/management/__pycache__
 # Do not include __pycache__ folders
 **/__pycache__/
 web/docs
+web/package-analysis-web/.env

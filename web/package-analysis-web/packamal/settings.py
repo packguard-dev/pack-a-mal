@@ -11,7 +11,11 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 
+# Load environment variables from .env file
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,13 +25,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-1u3=v8*@$#ny04l7wdd4&kflsxd5m2djh%a+ochns(ovj#7#ra'
+# Get SECRET_KEY from environment variable, fallback to default for development
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-1u3=v8*@$#ny04l7wdd4&kflsxd5m2djh%a+ochns(ovj#7#ra')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = ['152.42.180.203', '127.0.0.1', 'packguard.dev', 
-                 'www.packguard.dev', '157.230.194.230', 'localhost']
+# Get ALLOWED_HOSTS from environment variable, fallback to default
+ALLOWED_HOSTS_STR = os.getenv('ALLOWED_HOSTS', '152.42.180.203,127.0.0.1,packguard.dev,www.packguard.dev,157.230.194.230,localhost')
+ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS_STR.split(',')]
 
 
 # Application definition
@@ -76,15 +82,17 @@ WSGI_APPLICATION = 'packamal.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+# SECURITY: Database credentials are loaded from environment variables
+# Never commit actual credentials to version control!
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'packamal',
-        'USER': 'pakaremon',
-        'PASSWORD': 'rock-beryl-say-devices',
-        'HOST': 'localhost',
-        'PORT': '',
+        'NAME': os.getenv('DB_NAME', 'packamal'),
+        'USER': os.getenv('DB_USER', 'pakaremon'),
+        'PASSWORD': os.getenv('DB_PASSWORD', ''),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', ''),
     }
 }
 

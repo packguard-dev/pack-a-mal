@@ -79,3 +79,4 @@ zstandard==0.23.0
 six
 yara-python
 django_distill
+python-dotenv
